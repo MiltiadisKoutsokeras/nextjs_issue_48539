@@ -1,0 +1,37 @@
+################################################################################
+# Docker containers
+#
+# Author: Miltiadis Koutsokeras <miltos@langaware.com>
+#
+# See README.md for detailed instructions on how to use this file.
+#
+################################################################################
+
+services:
+  ############################################################################
+  # REST API Web Service
+  nextjs_issue_48539:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GIT_HASH: ${GIT_HASH:-NA}
+        GIT_BRANCH: ${GIT_BRANCH:-NA}
+    image: nextjs_issue_48539:local-testing
+    platform: linux/amd64
+    restart: unless-stopped
+    ports:
+      # Exposed in port HOST_PORT (default 5000) of localhost
+      - "127.0.0.1:${HOST_PORT:-3000}:${PORT:-3000}/tcp"
+    environment:
+      ####################################################################
+      # Application environment variables
+      NODE_ENV: ${NODE_ENV:-production}
+      NEXT_TELEMETRY_DISABLED: ${NEXT_TELEMETRY_DISABLED:-1}
+      BROWSER: ${BROWSER:-none}
+      FAST_REFRESH: ${FAST_REFRESH:-true}
+      COOKIE_USER_STATE_NAME: ${COOKIE_USER_STATE_NAME:-nextjs_issue_48539}
+      COOKIE_USER_STATE_SECRET: ${COOKIE_USER_STATE_SECRET:-ACDEFGHIJKLMNOPQRSTUVWXYZ0123456}
+      SECURE_COOKIES: ${SECURE_COOKIES:-false} # For local HTTP set false
+      ##########################################################################
+##############################################################################
